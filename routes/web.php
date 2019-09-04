@@ -16,3 +16,25 @@ Route::get('/', 'PagesController@home');
 Route::get('/about', 'PagesController@about');
 
 Route::get('/contact', 'PagesController@contact');
+
+Route::get('admin', function () {
+    return view('admin_template', [
+        'page_title' => 'title',
+        'page_description' => 'description',
+    ]);
+});
+
+Route::get('test', 'TestController@index');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('/weathers', 'WeathersController');
+// Route::get('/weathers', 'WeathersController@index');
+// Route::get('/weathers/create', 'WeathersController@create');
+// Route::get('/weathers/{project}', 'WeathersController@show');
+// Route::post('/weathers', 'WeathersController@store');
+// Route::get('/weathers/{project}/edit', 'WeathersController@edit');
+// Route::patch('/weathers/{project}', 'WeathersController@update');
+// Route::delete('/weathers/{project}', 'WeathersController@destroy');
+
