@@ -18,4 +18,8 @@ class Weather extends Model
     public function getCityById($id) {
         return City::findOrFail($id);
     }
+    
+    public function tasks() {
+        return $this->hasMany(Task::class);
+    }
 }

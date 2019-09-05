@@ -17,9 +17,18 @@
 	
 	<div class="content">
 		temperature: {{ $weather->temperature }}
+		
+		<p>
+    		<a href="/weathers/{{ $weather->id }}/edit">Редактировать</a>
+    	</p>
 	</div>
 	
-	<p>
-		<a href="/weathers/{{ $weather->id }}/edit">Редактировать</a>
-	</p>
+	@if ($weather->tasks->count())
+    	<div>
+    		@foreach ($weather->tasks as $task)
+    			<li>{{ $task->description }}</li>
+    		@endforeach
+    	</div>
+	@endif
+
 @endsection
