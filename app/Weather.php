@@ -13,9 +13,7 @@ class Weather extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'city_id', 'date', 'precipitation', 'temperature'
-    ];
+    protected $guarded = [];
     
     public function getCityById($id) {
         return City::findOrFail($id);

@@ -23,39 +23,24 @@ class WeathersController extends Controller
         return view('weathers.create');
     }
     
-    public function edit($id) {
-        $weather = Weather::findOrFail($id);
+    public function edit(Weather $weather) {
         return view('weathers.edit', compact('weather'));
     }
     
-    public function update($id) {
-        $weather = Weather::findOrFail($id);
-        
-        $weather->city_id = request('city_id');
-        $weather->date = request('date');
-        $weather->precipitation = request('precipitation');
-        $weather->temperature = request('temperature');
-        
-        $weather->save();
+    public function update(Weather $weather) {
+        $weather->update(request(['city_id', 'date', 'precipitation', 'temperature']));
         
         return redirect('/weathers');
     }
     
-    public function destroy($id) {
-        Weather::findOrFail($id)->delete();
+    public function destroy(Weather $weather) {
+        $weather->delete();
         
         return redirect('/weathers');
     }
     
     public function store() {
-        $weather = new Weather();
-        
-        $weather->city_id = request('city_id');
-        $weather->date = request('date');
-        $weather->precipitation = request('precipitation');
-        $weather->temperature = request('temperature');
-        
-        $weather->save();
+        Weather::create(request(['city_id', 'date', 'precipitation', 'temperature']));
         
         return redirect('/weathers');
     }
@@ -77,5 +62,9 @@ class WeathersController extends Controller
         $city = City::findOrFail($city_id);
         
         return view('weathers.callapi', compact('values', 'city'));
+    }
+    
+    public function show(Weather $weather) {
+        return view('weathers.show', compact('weather'));
     }
 }

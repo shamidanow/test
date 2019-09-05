@@ -13,7 +13,7 @@
         @foreach ($weathers as $weather)
         <tr>
             <td><a href="/weathers/{{ $weather->id }}/edit" title="Редактировать">{{ $weather->getCityById($weather->city_id)->name }}</a></td>
-            <td>{{ $weather->date }}</td>
+            <td><a href="/weathers/{{ $weather->id }}" title="Просмотр">{{ $weather->date }}</td>
             <td>{{ $weather->precipitation }}</td>
             <td>{{ $weather->temperature }}</td>
             <td><a href="/weathers/callapi/{{ $weather->getCityById($weather->city_id)->api_id }}/{{ $weather->city_id }}" title="Открыть прогноз">Подробнее</a></td>
