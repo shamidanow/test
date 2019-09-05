@@ -38,3 +38,4 @@ Route::resource('/weathers', 'WeathersController');
 // Route::patch('/weathers/{project}', 'WeathersController@update');
 // Route::delete('/weathers/{project}', 'WeathersController@destroy');
 
+Route::get('/weathers/callapi/{app_id}/{city_id}', 'WeathersController@callapi');

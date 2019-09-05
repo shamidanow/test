@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Weather;
+use App\City;
+use GuzzleHttp\Client;
 
 class WeathersController extends Controller
 {
@@ -58,5 +58,24 @@ class WeathersController extends Controller
         $weather->save();
         
         return redirect('/weathers');
+    }
+    
+    public function callapi($api_id, $city_id) {
+        $client = new Client();
+        $res = $client->request('GET', 'http://api.openweathermap.org/data/2.5/forecast', [
+            'query' => [
+                'id' => $api_id,
+                'units' => 'metric',
+                'lang' => 'ru',
+                'APPID' => '80f835aed72770e3e5c809661daad62d'
+            ]
+        ]);
+        
+        $data = json_decode($res->getBody());
+        $values = $data->list;
+        
+        $city = City::findOrFail($city_id);
+        
+        return view('weathers.callapi', compact('values', 'city'));
     }
 }
