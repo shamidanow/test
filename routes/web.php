@@ -40,4 +40,5 @@ Route::resource('/weathers', 'WeathersController');
 
 Route::get('/weathers/callapi/{app_id}/{city_id}', 'WeathersController@callapi');
 
+Route::post('/weathers/{weather}/tasks', 'WeatherTasksController@store');
 Route::patch('/tasks/{task}', 'WeatherTasksController@update');
