@@ -40,7 +40,13 @@ class WeathersController extends Controller
     }
     
     public function store() {
-        Weather::create(request(['city_id', 'date', 'precipitation', 'temperature']));
+        Weather::create(
+            request()->validate([
+                'city_id' => ['required', 'min:2'],
+                'date' => ['required', 'date'], 
+                'precipitation' => 'required', 
+                'temperature' => 'required'
+        ]));
         
         return redirect('/weathers');
     }
