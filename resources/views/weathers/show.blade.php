@@ -26,7 +26,17 @@
 	@if ($weather->tasks->count())
     	<div>
     		@foreach ($weather->tasks as $task)
-    			<li>{{ $task->description }}</li>
+    			<div>
+    				<form method="POST" action="/tasks/{{ $task->id }}">
+    					@method('PATCH')
+    					@csrf
+    					
+    					<label class="checkbox {{ $task->completed ? 'is-complete' : '' }}" for="completed">
+    						<input type="checkbox" name="completed" onChange="this.form.submit()" {{ $task->completed ? 'checked' : '' }}>
+    						{{ $task->description }}
+    					</label>
+    				</form>
+    			</div>
     		@endforeach
     	</div>
 	@endif
