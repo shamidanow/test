@@ -14,23 +14,4 @@ class WeatherTasksController extends Controller
         
         return back();
     }
-    
-    public function update(Task $task) {
-//         if (request()->has('completed')) {
-//             $task->complete();
-//         } else {
-//             $task->incomplete();
-//         }
-
-//         request()->has('completed') ? $task->complete() : $task->incomplete();
-
-        $method = request()->has('completed') ? 'complete' : 'incomplete';
-        $task->$method();
-        
-//         $task->update([
-//             'completed' => request()->has('completed')
-//         ]);
-        
-        return back();
-    }
 }
