@@ -11,4 +11,12 @@ class Task extends Model
     public function weather() {
         return $this->belongsTo(Weather::class);
     }
+    
+    public function complete($completed = true) {
+        $this->update(compact('completed'));
+    }
+    
+    public function incomplete() {
+        $this->complete(false);
+    }
 }
