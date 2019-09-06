@@ -15,11 +15,13 @@ class CreateWeatherTable extends Migration
     {
         Schema::create('weather', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('city_id');
+            $table->unsignedInteger('city_id');
             $table->date('date');
             $table->string('precipitation');
             $table->double('temperature');
             $table->timestamps();
+            
+            $table->foreign('city_id')->references('id')->on('city')->onDelete('cascade');
         });
     }
 

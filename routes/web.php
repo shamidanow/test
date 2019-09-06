@@ -29,7 +29,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('/weathers', 'WeathersController');
+Route::resource('/weathers', 'WeathersController')->middleware('can:update,weather');
 // Route::get('/weathers', 'WeathersController@index');
 // Route::get('/weathers/create', 'WeathersController@create');
 // Route::get('/weathers/{project}', 'WeathersController@show');

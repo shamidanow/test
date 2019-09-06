@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCitiesTable extends Migration
+class AddOwnerIdColumsToWeatherTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateCitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('city', function (Blueprint $table) {
-            $table->unsignedInteger('id');
-            $table->string('name');
-            $table->timestamps();
+        Schema::table('weather', function (Blueprint $table) {
+            $table->unsignedInteger('owner_id');
         });
     }
 
@@ -27,6 +25,8 @@ class CreateCitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('city');
+        Schema::table('weather', function (Blueprint $table) {
+            $table->dropColumn('owner_id');
+        });
     }
 }

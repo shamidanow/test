@@ -8,8 +8,13 @@ use GuzzleHttp\Client;
 
 class WeathersController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['show']);
+    }
+    
     public function index() {
-        $weathers = Weather::all();
+        $weathers = Weather::where('owner_id', auth()->id())->get(); //Weather::all();
         
         /*$weathers = Weather::where('temperature', 9)
             ->orderBy('precipitation', 'asc')
@@ -28,12 +33,16 @@ class WeathersController extends Controller
     }
     
     public function update(Weather $weather) {
+        //$this->authorize('update', $weather);
+        
         $weather->update(request(['city_id', 'date', 'precipitation', 'temperature']));
         
         return redirect('/weathers');
     }
     
     public function destroy(Weather $weather) {
+        //$this->authorize('update', $weather);
+        
         $weather->delete();
         
         return redirect('/weathers');
@@ -46,7 +55,7 @@ class WeathersController extends Controller
                 'date' => ['required', 'date'], 
                 'precipitation' => 'required', 
                 'temperature' => 'required'
-        ]));
+            ]) + ['owner_id' => auth()->id()]);
         
         return redirect('/weathers');
     }
@@ -71,6 +80,19 @@ class WeathersController extends Controller
     }
     
     public function show(Weather $weather) {
+//         if ($weather->owner_id !== auth()->id()) {
+//             abort(403);
+//         }
+        
+        //abort_if($weather->owner_id !== auth()->id(), 403);
+        //abort_unless
+        //$this->authorize('update', $weather);
+        
+//         if (\Gate::denies('update', $weather)) {
+//             abort(403);
+//         }
+        //abort_unless(\Gate::allows('update', $weather), 403);
+        
         return view('weathers.show', compact('weather'));
     }
 }

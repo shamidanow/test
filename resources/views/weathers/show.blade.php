@@ -3,6 +3,10 @@
 @section('content')
 	<h1 class="title">Погода в городе: {{ $weather->getCityById($weather->city_id)->name }}</h1>
 	
+	@can('update', $weather)
+		<a href="">Update</a>
+	@endcan
+	
 	<div class="content">
 		city_id: {{ $weather->city_id }}
 	</div>
