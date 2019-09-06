@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Weather;
 use App\City;
 use GuzzleHttp\Client;
-use App\Mail\WeatherCreated;
 
 class WeathersController extends Controller
 {
@@ -63,11 +62,7 @@ class WeathersController extends Controller
         $attributes = $this->validateWeather();
         $attributes['owner_id'] = auth()->id();
         
-        $weather = Weather::create($attributes);
-        
-        \Mail::to('example@t.t')->send(
-            new WeatherCreated($weather)
-        );
+        Weather::create($attributes);
         
         return redirect('/weathers');
     }

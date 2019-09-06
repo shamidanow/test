@@ -3,6 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WeatherCreated;
 
 class Weather extends Model
 {
@@ -14,6 +16,20 @@ class Weather extends Model
      * @var array
      */
     protected $guarded = [];
+    
+    protected static function boot() {
+        parent::boot();
+        
+        static::created(function ($weather) {
+            Mail::to($weather->owner->email)->send(
+                new WeatherCreated($weather)
+            );
+        });
+    }
+    
+    public function owner() {
+        return $this->belongsTo(User::class);
+    }
     
     public function getCityById($id) {
         return City::findOrFail($id);
