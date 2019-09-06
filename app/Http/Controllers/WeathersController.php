@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Weather;
 use App\City;
 use GuzzleHttp\Client;
+use App\Events\WeatherCreated;
 
 class WeathersController extends Controller
 {
@@ -62,7 +63,9 @@ class WeathersController extends Controller
         $attributes = $this->validateWeather();
         $attributes['owner_id'] = auth()->id();
         
-        Weather::create($attributes);
+        $weather = Weather::create($attributes);
+        
+        //event(new WeatherCreated($weather));
         
         return redirect('/weathers');
     }

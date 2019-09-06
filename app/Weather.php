@@ -3,12 +3,15 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\WeatherCreated;
+use App\Events\WeatherCreated;
 
 class Weather extends Model
 {
     protected $table = 'weather';
+    
+    protected $dispatchesEvents = [
+        'created' => WeatherCreated::class
+    ];
     
     /**
      * The attributes that are mass assignable.
@@ -16,16 +19,6 @@ class Weather extends Model
      * @var array
      */
     protected $guarded = [];
-    
-    protected static function boot() {
-        parent::boot();
-        
-        static::created(function ($weather) {
-            Mail::to($weather->owner->email)->send(
-                new WeatherCreated($weather)
-            );
-        });
-    }
     
     public function owner() {
         return $this->belongsTo(User::class);
