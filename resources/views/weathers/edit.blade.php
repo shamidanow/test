@@ -45,6 +45,8 @@
 		</div>
 	</form>
 	
+	@include('errors')
+	
 	<form method="POST" action="/weathers/{{ $weather->id }}" style="margin-bottom: lem;">
 		@method('DELETE')
 		@csrf

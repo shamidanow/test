@@ -15,7 +15,9 @@ class WeathersController extends Controller
     }
     
     public function index() {
-        $weathers = Weather::where('owner_id', auth()->id())->get(); //Weather::all();
+        //$weathers = auth()->user()->weathers;
+        //$weathers = Weather::where('owner_id', auth()->id())->get(); 
+        //Weather::all();
         
         /*cache()->rememberForever('stats', function () {
             return (['lessons' => 1300, 'hours' => 50000]);
@@ -29,7 +31,9 @@ class WeathersController extends Controller
             ->take(10)
             ->get();*/
         
-        return view('weathers.index', compact('weathers'));
+        return view('weathers.index', [
+            'weathers' => auth()->user()->weathers
+        ]);
     }
     
     public function create() {
@@ -42,8 +46,7 @@ class WeathersController extends Controller
     
     public function update(Weather $weather) {
         //$this->authorize('update', $weather);
-        
-        $weather->update(request(['city_id', 'date', 'precipitation', 'temperature']));
+        $weather->update($this->validateWeather());
         
         return redirect('/weathers');
     }
@@ -57,13 +60,10 @@ class WeathersController extends Controller
     }
     
     public function store() {
-        $weather = Weather::create(
-            request()->validate([
-                'city_id' => ['required', 'min:2'],
-                'date' => ['required', 'date'], 
-                'precipitation' => 'required', 
-                'temperature' => 'required'
-            ]) + ['owner_id' => auth()->id()]);
+        $attributes = $this->validateWeather();
+        $attributes['owner_id'] = auth()->id();
+        
+        $weather = Weather::create($attributes);
         
         \Mail::to('example@t.t')->send(
             new WeatherCreated($weather)
@@ -106,5 +106,14 @@ class WeathersController extends Controller
         //abort_unless(\Gate::allows('update', $weather), 403);
         
         return view('weathers.show', compact('weather'));
+    }
+    
+    protected function validateWeather() {
+        return request()->validate([
+            'city_id' => ['required', 'min:2'],
+            'date' => ['required', 'date'],
+            'precipitation' => 'required',
+            'temperature' => 'required'
+        ]);
     }
 }
