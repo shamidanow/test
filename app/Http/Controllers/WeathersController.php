@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Weather;
 use App\City;
 use GuzzleHttp\Client;
+use App\Mail\WeatherCreated;
 
 class WeathersController extends Controller
 {
@@ -15,6 +16,13 @@ class WeathersController extends Controller
     
     public function index() {
         $weathers = Weather::where('owner_id', auth()->id())->get(); //Weather::all();
+        
+        /*cache()->rememberForever('stats', function () {
+            return (['lessons' => 1300, 'hours' => 50000]);
+        });*/
+        
+        //$stats = cache()->get('stats');
+        //dump($stats);
         
         /*$weathers = Weather::where('temperature', 9)
             ->orderBy('precipitation', 'asc')
@@ -49,13 +57,17 @@ class WeathersController extends Controller
     }
     
     public function store() {
-        Weather::create(
+        $weather = Weather::create(
             request()->validate([
                 'city_id' => ['required', 'min:2'],
                 'date' => ['required', 'date'], 
                 'precipitation' => 'required', 
                 'temperature' => 'required'
             ]) + ['owner_id' => auth()->id()]);
+        
+        \Mail::to('example@t.t')->send(
+            new WeatherCreated($weather)
+        );
         
         return redirect('/weathers');
     }
