@@ -21,7 +21,7 @@ class CreateWeatherTable extends Migration
             $table->double('temperature');
             $table->timestamps();
             
-            $table->foreign('city_id')->references('id')->on('city')->onDelete('cascade');
+            //$table->foreign('city_id')->references('id')->on('city')->onDelete('cascade');
         });
     }
 
