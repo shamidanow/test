@@ -1,5 +1,7 @@
 <?php
 
+use App\Notifications\SubscriptionRenewalFailed;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,3 +45,11 @@ Route::get('/weathers/callapi/{app_id}/{city_id}', 'WeathersController@callapi')
 Route::post('/weathers/{weather}/tasks', 'WeatherTasksController@store');
 Route::post('/completed-tasks/{task}', 'CompletedTasksController@store');
 Route::delete('/completed-tasks/{task}', 'CompletedTasksController@destroy');
+
+Route::get('/notification', function () {
+    $user = App\User::first();
+    
+    $user->notify(new SubscriptionRenewalFailed());
+    
+    return 'Done';
+});
